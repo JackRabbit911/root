@@ -8,6 +8,8 @@ $GLOBALS['_ram'] = memory_get_usage();
 chdir(__DIR__);
 
 define('DOCROOT', './');
-require_once '../application/common/config/bootstrap.php';
+// define('APPPATH', DOCROOT . '../application/');
+define('APPPATH', DOCROOT . '../../burime/');
+require_once APPPATH . 'common/config/bootstrap.php';
 
 AppFactory::create()->run();
