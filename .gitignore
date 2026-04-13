@@ -1,0 +1,16 @@
+.env
+composer.phar
+node_modules/
+vendor/
+storage/
+system/
+public/img/
+public/avatar/
+/test/*
+/htdocs/test/*
+/sys/*
+backup/
+front_src/
+front_auth/
+master.zip
+*.sql
