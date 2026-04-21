@@ -8,7 +8,9 @@ use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
 use Sys\AppFactory;
 
 define('DOCROOT', './public/');
-require_once './application/common/config/bootstrap.php';
+define('APPPATH', '../burime/');
+
+require_once APPPATH . 'common/config/bootstrap.php';
 
 $container = AppFactory::getContainer();
 
