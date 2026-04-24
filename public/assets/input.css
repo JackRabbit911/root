@@ -1,9 +1,12 @@
 @import "tailwindcss" source(none);
 @plugin "daisyui";
+
 @source "../../../burime/app/views";
 @source "../../../burime/auth/views";
 @source "../../../front_src";
 @source "../../../front_auth";
+
+/* @custom-variant dark (&:where(.dark, .dark *)); */
 
 summary.menu-active {
     color: var(--menu-active-fg);
