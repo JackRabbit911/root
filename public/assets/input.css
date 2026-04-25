@@ -6,8 +6,6 @@
 @source "../../../front_src";
 @source "../../../front_auth";
 
-/* @custom-variant dark (&:where(.dark, .dark *)); */
-
 summary.menu-active {
     color: var(--menu-active-fg);
     background-color: var(--menu-active-bg);
