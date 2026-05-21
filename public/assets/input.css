@@ -5,6 +5,7 @@
 @source "../../../burime/auth/views";
 @source "../../../front_src";
 @source "../../../front_auth";
+@source "./js";
 
 summary.menu-active {
     color: var(--menu-active-fg);
