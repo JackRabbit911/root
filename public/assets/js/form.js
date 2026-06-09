@@ -1,80 +1,74 @@
-const forms = Array.from(document.forms)
+export const formHandler = ({ errorHandler }) => {
+    const forms = Array.from(document.forms)
 
-for (let i = 0; i < forms.length; i++) {
-    const form = forms[i]
+    for (let i = 0; i < forms.length; i++) {
+        const form = forms[i]
 
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault()
-        const formData = new FormData(form)
-        const method = form.elements._method?.value || form.method
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault()
+            const formData = new FormData(form)
+            const method = form.elements._method?.value || form.method
 
-        try {
-            const response = method === 'get' ?
-                await fetchGet(form) :
-                await fetchPost(form, method)
+            try {
+                const response = method === 'get' ?
+                    await fetchGet(form) :
+                    await fetchPost(form, method)
 
-            if (response.ok) {
-                const contentType = response.headers.get("content-type")
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new TypeError("Oops, we didn't get JSON back from the server!")
-                }
-
-                const data = await response.json();
-
-                if (data.success && data.result) {
-                    for (const [key, value] of Object.entries(data.result)) {
-                        const elem = document.getElementById(key)
-
-                        if (elem) {
-                            elem.insertAdjacentHTML('afterend', value)
-                            elem.remove()
-                        }
+                if (response.ok) {
+                    const contentType = response.headers.get("content-type")
+                    if (!contentType || !contentType.includes("application/json")) {
+                        throw new TypeError("Oops, we didn't get JSON back from the server!")
                     }
-                } else if (data.error) {
-                    customHandler(form, data.error)
+
+                    const data = await response.json();
+
+                    if (data.success && data.result) {
+                        for (const [key, value] of Object.entries(data.result)) {
+                            const elem = document.getElementById(key)
+
+                            if (elem) {
+                                elem.insertAdjacentHTML('afterend', value)
+                                elem.remove()
+                            }
+                        }
+                    } else if (data.error) {
+                        errorHandler(form, data.error)
+                    }
+                } else if (response.status === 422) {
+                    const data = await response.json();
+                    errorHandler(form, data.error)
                 }
+            } catch (error) {
+                console.error('Ошибка при запросе:', error)
             }
-        } catch (error) {
-            console.error('Ошибка при запросе:', error)
-        }
-    })
+        })
+    }
+
+    async function fetchGet(form) {
+        const formData = new FormData(form)
+        const searchParams = new URLSearchParams(formData)
+        const url = new URL(form.action)
+        url.search = searchParams
+
+        window.history.replaceState({}, '', url);
+
+        return await fetch(url.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+    }
+
+    async function fetchPost(form, method) {
+        const formData = new FormData(form)
+        const url = form.action
+
+        return await fetch(url, {
+            method: method,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: formData,
+        })
+    }
 }
-
-async function fetchGet(form) {
-    const formData = new FormData(form)
-    const searchParams = new URLSearchParams(formData)
-    const url = new URL(form.action)
-    url.search = searchParams
-
-    window.history.replaceState({}, '', url);
-
-    return await fetch(url.toString(), {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-        }
-    })
-}
-
-async function fetchPost(form, method) {
-    const formData = new FormData(form)
-    const url = form.action
-
-    return await fetch(url, {
-        method: method,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: formData,
-    })
-}
-
-function customHandler(form, error) {
-    const errorArray = Object.entries(error).filter(([key, value]) => value.status === 'error')
-    errorArray.forEach((value => {
-        const input = form.elements[value[0]]
-        input.value = null
-        input.placeholder = value[1].msg
-        input.classList.add('placeholder:text-error')
-    }))
-}
-
