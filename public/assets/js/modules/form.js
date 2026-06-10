@@ -34,7 +34,7 @@ export const formHandler = ({ errorHandler }) => {
                     } else if (data.error) {
                         errorHandler(form, data.error)
                     }
-                } else if (response.status === 422) {
+                } else if (response.status >= 400 && response.status < 500) {
                     const data = await response.json();
                     errorHandler(form, data.error)
                 }
