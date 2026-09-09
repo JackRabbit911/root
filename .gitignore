@@ -3,6 +3,7 @@ composer.phar
 node_modules/
 vendor/
 storage/
+maintenance
 system/
 public/img/
 public/avatar/
