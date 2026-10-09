@@ -11,6 +11,7 @@ define('DOCROOT', './');
 define('APPPATH', DOCROOT . '../../burime/');
 require_once APPPATH . 'common/config/bootstrap.php';
 
-$app = AppFactory::create();
+$factory = new AppFactory();
+$app = $factory->create();
 $response = $app->run();
 $app->emit($response);
