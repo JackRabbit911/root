@@ -3,8 +3,8 @@ Options +FollowSymLinks
 Options All -Indexes
 
 <Files ~ "(.env|cli|.gitignore)">
-order allow,deny
-deny from all
+  order allow,deny
+  deny from all
 </Files>
 
 ErrorDocument 403 /error/404
