@@ -7,8 +7,9 @@ $GLOBALS['_ram'] = memory_get_usage();
 
 chdir(__DIR__);
 
+$basePath = dirname(dirname(__DIR__));
 define('DOCROOT', __DIR__ . '/');
-define('APPPATH', DOCROOT . '../../../burime/');
+define('APPPATH', $basePath . '/burime/');
 require_once APPPATH . 'common/config/bootstrap.php';
 
 $factory = new AppFactory();
