@@ -2,6 +2,7 @@
 composer.phar
 node_modules/
 vendor/
+application
 storage/
 maintenance
 system/
