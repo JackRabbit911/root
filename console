@@ -8,11 +8,12 @@ use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
 use Sys\AppFactory;
 
 define('DOCROOT', './public/');
-define('APPPATH', '../burime/');
+define('APPPATH', './application/');
 
 require_once APPPATH . 'common/config/bootstrap.php';
 
-$container = AppFactory::getContainer();
+$factory = new AppFactory();
+$container = $factory->getContainer();
 
 if (is_file(FRAMEWORK . 'Console/console_commands.php')) {
     $commands = require_once FRAMEWORK . 'Console/console_commands.php';
