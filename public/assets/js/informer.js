@@ -24,7 +24,7 @@ const fetchOnTimeOut = async (url, interval = 5000) => {
             }
         }
 
-    setTimeout(fetchOnTimeOut, interval, url, interval);
+    // setTimeout(fetchOnTimeOut, interval, url, interval);
     } catch (err) {
         if (err.name === 'TimeoutError') {
             console.error('Request timed out');
